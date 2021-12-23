@@ -24,6 +24,7 @@ type Value interface {
 	Size() int           // Size represents the number of elements in the Value. Note that in cases such as a *tensor.Dense, the underlying slice MAY have more elements than the Size() reports. This is correct.
 	Data() interface{}   // Data returns the original representation of the Value
 	Dtype() tensor.Dtype // Dtype returns the Dtype of the value
+	SetGrad(any interface{}) error
 
 	tensor.Memory
 	fmt.Formatter
