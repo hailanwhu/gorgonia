@@ -455,7 +455,6 @@ func (n *Node) SetGrad(any interface{}) error {
 	if err != nil {
 		return err
 	}
-	dv, ok := n.boundTo.(*dualValue)
 	if dv, ok := n.boundTo.(*dualValue); !ok {
 		if err := n.bind(&dualValue{Value: n.boundTo, d: v}); err != nil {
 			panic(err)
