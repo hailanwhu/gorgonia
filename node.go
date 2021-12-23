@@ -465,6 +465,21 @@ func (n *Node) Dims() int {
 	}
 }
 
+func (n *Node) SetGrad(any interface{}) error {
+	v, _, _, err := anyToValue(any)
+	if err != nil {
+		return err
+	}
+	if dv, ok := n.boundTo.(*dualValue); !ok {
+		if err := n.bind(&dualValue{Value: n.boundTo, d: v}); err != nil {
+			panic(err)
+		}
+	} else {
+		dv.d = v
+	}
+	return nil
+}
+
 // Type returns the type of the node
 func (n *Node) Type() hm.Type { return n.t }
 
