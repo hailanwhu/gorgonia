@@ -450,6 +450,22 @@ func (n *Node) Grad() (Value, error) {
 	return nil, errors.Errorf("No Gradient node/value found for %T", n)
 }
 
+func (n *Node) SetGrad(any interface{}) error {
+	v, _, _, err := anyToValue(any)
+	if err != nil {
+		return err
+	}
+	dv, ok := n.boundTo.(*dualValue)
+	if dv, ok := n.boundTo.(*dualValue); !ok {
+		if err := n.bind(&dualValue{Value: n.boundTo, d: v}); err != nil {
+			panic(err)
+		}
+	} else {
+		dv.d = v
+	}
+	return nil
+}
+
 // Dims indicates how many dimensions the node's result has
 func (n *Node) Dims() int {
 	if n.shape != nil {
